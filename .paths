@@ -1,0 +1,12 @@
+$HOME/.rvm/bin
+/usr/local/git/bin/git
+/usr/local/heroku/bin
+/usr/bin
+/bin
+/usr/sbin
+/sbin
+/usr/local/bin
+/Users/anthonygarreffa/bin/gradle/bin:$ANDROID_HOME/platform-tools
+/opt/local/bin
+/opt/local/sbin
+/usr/local/bin

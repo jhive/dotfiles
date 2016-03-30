@@ -45,7 +45,6 @@ plugins=(git history history-substring-search terminalapp brew sublime extract)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Users/anthonygarreffa/bin/gradle/bin:$ANDROID_HOME/platform-tools
 export CLOSURE_PATH=/usr/local/Cellar/closure-compiler/20130823/libexec/
 
 # Load the shell dotfiles, and then some:
@@ -56,7 +55,6 @@ for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
 done
 unset file
 
-export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:$PATH
 
 # Aliases to SSH into audible amazon server
 alias build='grunt compile:local'
@@ -74,11 +72,9 @@ alias merge='git mergetool -t opendiff'
 alias mongostart="launchctl start org.mongodb.mongod"
 alias mongostop="launchctl stop org.mongodb.mongod"
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+# import a list of paths
+export PATH=$PATH:$(eval echo $(cat $HOME/.paths | sed 's:#.*$::g' | sed '/^\s*$/d' | sed -e :a -e '$!N; s/\n/:/; ta'))
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-PATH=":/usr/local/git/bin/git:$PATH"
 source $(brew --prefix nvm)/nvm.sh
 
 export TERM='xterm-256color'
