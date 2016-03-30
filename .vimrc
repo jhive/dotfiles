@@ -1,106 +1,187 @@
-" Use the Solarized Dark theme
-set background=dark
-colorscheme solarized
-let g:solarized_termtrans=1
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" Make Vim more useful
+"Color themes
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'sickill/vim-monokai'
+Plugin 'tpope/vim-vividchalk'
+Plugin 'reedes/vim-colors-pencil'
+Plugin 'noahfrederick/vim-hemisu'
+Plugin 'chriskempson/vim-tomorrow-theme'
+
+Plugin 'gmarik/Vundle.vim' "Easy bundle installation
+
+"Syntax highlighting
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'digitaltoad/vim-jade'
+Plugin 'pangloss/vim-javascript'
+Plugin 'plasticboy/vim-markdown'
+
+Plugin 'bkad/CamelCaseMotion' "Better motions for JS code
+Plugin 'scrooloose/syntastic' "JS Hint
+Plugin 'scrooloose/nerdtree' "File tree explorer
+Plugin 'scrooloose/nerdcommenter' "Quick commenting with <leader>ci
+Plugin 'kien/ctrlp.vim' "Use ctrl-p for fuzzy search for files
+Plugin 'Valloric/YouCompleteMe' "Autocompletion
+Plugin 'marijnh/tern_for_vim' "Parses javascript and provides better autocomplete
+Plugin 'millermedeiros/esformatter' "Javascript pretty printer
+Plugin 'Yggdroot/indentLine' "Adds thin lines to show indenting
+Plugin 'mileszs/ack.vim' "Search files using :Ack
+Plugin 'tpope/vim-surround' "Quickly change surrounding characters like '' or {}
+Plugin 'Lokaltog/vim-easymotion' "Jump around files quickly with motions
+Plugin 'Raimondi/delimitMate' "Adds autocomplete pairs for quotes/brackets
+Plugin 'bling/vim-airline' "Adds an info bar at the bottom of vim
+Plugin 'Lokaltog/powerline-fonts' "Fonts for airline, better arrows
+Plugin 'tpope/vim-fugitive' "Git wrapper support
+Plugin 'mbbill/undotree' "Visualize the undo tree in vim
+Plugin 'terryma/vim-multiple-cursors' "Multiple cursors, yay! - use ctrl-n
+Plugin 'eddking/eclim-vundle'
+Plugin 'editorconfig/editorconfig-vim'
+" Plugin 'dahu/Insertlessly' "Insert whitespace in normal mode!
+Plugin 'tpope/vim-repeat' "Lets vim repeat things that it doesn't normally
+Plugin 'msanders/snipmate.vim' "Code snippets
+Plugin 'garbas/vim-snipmate' "Mocha code snippets
+Plugin 'troydm/easybuffer.vim' "Easier buffer switching
+" Clojure plugins
+Plugin 'guns/vim-clojure-static' "Syntax support
+Plugin 'tpope/vim-fireplace' "REPL powers
+Plugin 'slimv.vim'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'tpope/vim-classpath'
+
+call vundle#end()
+
+" Let VIM do the cool stuff
 set nocompatible
 " Use the OS clipboard by default (on versions compiled with `+clipboard`)
 set clipboard=unnamed
-" Enhance command-line completion
-set wildmenu
-" Allow cursor keys in insert mode
-set esckeys
-" Allow backspace in insert mode
-set backspace=indent,eol,start
-" Optimize for fast terminal connections
-set ttyfast
-" Add the g flag to search/replace by default
-set gdefault
-" Use UTF-8 without BOM
-set encoding=utf-8 nobomb
-" Change mapleader
-let mapleader=","
-" Don’t add empty newlines at the end of files
-set binary
-set noeol
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.vim/backups
-set directory=~/.vim/swaps
-if exists("&undodir")
-	set undodir=~/.vim/undo
-endif
-
-" Don’t create backups when editing files in certain directories
-set backupskip=/tmp/*,/private/tmp/*
-
-" Respect modeline in files
-set modeline
-set modelines=4
-" Enable per-directory .vimrc files and disable unsafe commands in them
-set exrc
-set secure
-" Enable line numbers
+" Show line numbers
 set number
-" Enable syntax highlighting
-syntax on
-" Highlight current line
-set cursorline
-" Make tabs as wide as two spaces
-set tabstop=2
-" Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
-set list
-" Highlight searches
-set hlsearch
-" Ignore case of searches
-set ignorecase
-" Highlight dynamically as pattern is typed
-set incsearch
-" Always show status line
-set laststatus=2
-" Enable mouse in all modes
-set mouse=a
-" Disable error bells
-set noerrorbells
-" Don’t reset cursor to start of line when moving around.
-set nostartofline
-" Show the cursor position
-set ruler
-" Don’t show the intro message when starting Vim
-set shortmess=atI
-" Show the current mode
-set showmode
-" Show the filename in the window titlebar
-set title
-" Show the (partial) command as it’s being typed
-set showcmd
-" Use relative line numbers
-if exists("&relativenumber")
-	set relativenumber
-	au BufReadPost * set relativenumber
-endif
-" Start scrolling three lines before the horizontal window border
+" Limit the number of syntax highlight chars to prevent slow editor
+set synmaxcol=512
+filetype plugin indent on
+" Use AG for search instead of Ack
+let g:ackprg = 'ag --nogroup --nocolor --column'
+
+" YouCompleteMe Tweeks
+let g:ycm_add_preview_to_completeopt=0
+let g:ycm_confirm_extra_conf=0
+let g:EclimCompletionMethod = 'omnifunc' " Eclim support
+set completeopt-=preview
+
+filetype plugin indent on
+
+" Set it to scroll when cursor is near top or bottom
+set so=7
+" Set it to scroll when cursor is near edgues
 set scrolloff=3
 
-" Strip trailing whitespace (,ss)
-function! StripWhitespace()
-	let save_cursor = getpos(".")
-	let old_query = getreg('/')
-	:%s/\s\+$//e
-	call setpos('.', save_cursor)
-	call setreg('/', old_query)
-endfunction
-noremap <leader>ss :call StripWhitespace()<CR>
-" Save a file as root (,W)
-noremap <leader>W :w !sudo tee % > /dev/null<CR>
-
-" Automatic commands
-if has("autocmd")
-	" Enable file type detection
-	filetype on
-	" Treat .json files as .js
-	autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-	" Treat .md files as Markdown
-	autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+" Undotree
+nnoremap <leader>ud :UndotreeToggle<cr>
+let g:undotree_SetFocusWhenToggle=1
+if has("persistent_undo")
+    set undodir='~/.vim/undo'
+    set undofile
 endif
+
+"Get rid of the damn noises
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
+
+"Reset the background color for tmux support
+set t_ut=
+
+" Allow switching buffers without saving current buffer
+set hidden
+
+" Line wrap
+set wrap
+
+" Nerdtree
+let NERDTreeQuitOnOpen = 1
+nnoremap <leader>nd :NERDTree .<CR>
+nnoremap <leader>nf :NERDTreeFind <CR>
+
+" Java Stuff
+nnoremap <leader>jf :JUnit %<CR>
+nnoremap <leader>ja :JUnit *<CR>
+
+" Better movement for wrapped lines
+nmap j gj
+nmap k gk
+
+" Improve search a bit
+set incsearch
+set ignorecase
+set smartcase
+" File and buffer navigation
+nnoremap <leader>ls :ls<CR>:b<SPACE>
+nnoremap <leader>ll :EasyBuffer<CR>
+nnoremap <leader>tt <C-^>
+nnoremap <leader>tk :bp<CR>
+nnoremap <leader>tj :bn<CR>
+nnoremap <leader>tq :bd<CR>
+
+" Quick escape
+inoremap <silent>jj <ESC>
+
+" Powerline settings
+"set guifont=Meslo\ LG\ M\ for\ Powerline
+"set guifont=Inconsolata\ for\ Powerline
+"set guifont=DejaVu\ Sans\ Mono\ for\ Powerline
+set laststatus=2
+let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled = 1
+
+" Making it pretty
+set t_co=256
+syntax on
+set background=dark
+set linespace=1
+set colorcolumn=80
+set guifont=Meslo\ LG\ L\ DZ\ for\ Powerline:h12
+if has('gui_running')
+  colorscheme solarized
+else
+  colorscheme monokai
+endif
+
+" Indenting
+filetype plugin indent on
+set tabstop=2 shiftwidth=2 expandtab
+hi IndentGuidesOdd  ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
+
+set noswapfile
+" CTRL P settings
+nnoremap <leader>e :CtrlPBuffer<CR>
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_dotfiles = 0
+let g:ctrlp_switch_buffer = 0
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+let g:paredit_mode = 1

@@ -141,32 +141,152 @@
 	log = true
 
 [push]
+	default = simple
+[url "https://"]
+	insteadOf = git://
+[color]
+  ui = true
+[alias]
 
-	# Use the Git 1.x.x default to avoid errors on machines with old Git
-	# installations. To use `simple` instead, add this to your `~/.extra` file:
-	# `git config --global push.default simple`. See http://git.io/mMah-w.
-	default = matching
-	# Make `git push` push relevant annotated tags when pushing branches out.
-	followTags = true
+  #############################################################################
+  # Explore your history, the commits and the code                            #
+  #############################################################################
 
-# URL shorthands
+  # List commits in short form, with colors and branch/tag annotations
+  ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
 
-[url "git@github.com:"]
+  # List commits in short form, with colors and branch/tag annotations and branch graph
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
 
-	insteadOf = "gh:"
-	pushInsteadOf = "github:"
-	pushInsteadOf = "git://github.com/"
+  # List commits showing changed files
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+  # List with no colors just in case you need to chain the out put with Unix pipes
+  lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
+  # List commits showing dates
+  lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn\\ %cr]" --decorate --date=short
+  # List commits showing relative dates
+  ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+  # Default short git log with no colors/formats
+  le = log --online --decorate
 
-[url "git://github.com/"]
+  #############################################################################
+  # Show the history of a file, with diffs                                    #
+  #############################################################################
 
-	insteadOf = "github:"
+  # See all the commits related to a file
+  fl = log -u
 
-[url "git@gist.github.com:"]
+  #############################################################################
+  # Log commands to inspect (recent) history                                  #
+  #############################################################################
 
-	insteadOf = "gst:"
-	pushInsteadOf = "gist:"
-	pushInsteadOf = "git://gist.github.com/"
+  # Show modified files in last commit
+  dl = "!git ll -1"
+  # Show a diff last commit
+  dlc = diff --cached HEAD^
+  # Show content (full diff) of a commit given a revistion
+  dr = "!f() { git diff "$1"^.."$1"; }; f"
+  lc = "!f() { git ll "$1"^.."$1"; }; f"
 
-[url "git://gist.github.com/"]
+  #############################################################################
+  # Finding files and content inside files (grep                              #
+  #############################################################################
+  # usage $ git <alias> <String>
 
-	insteadOf = "gist:"
+  # Find a file path in codebase
+  f = "!git ls-files | grep -i"
+  # Search/grep your entire codebase for a string
+  gr = grep -Ii
+  # Grep from root folder
+  gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
+
+  #############################################################################
+  # List all your aliases                                                     #
+  #############################################################################
+
+  la = "!git config -l | grep alias | cut -c 7-"
+
+  #############################################################################
+  # Rename [branch] to done-[branch]                                          #
+  #############################################################################
+
+  done = "!f() { git branch | grep "$1" | cut -c 3- | grep -v done | xargs -I {} git branch -m {} done/{}; }; f"
+  bug = "!f() { echo "$1" | xargs -I {} git checkout -b bug/DRCWBTE-{}; }; f"
+  feature = "!f() { echo "$1" | xargs -I {} git checkout -b feature/{}; }; f"
+  spike = "!f() { echo "$1" | xargs -I {} git checkout -b spike/{}; }; f"
+
+  #############################################################################
+  # Assume aliases                                                            #
+  #############################################################################
+
+  # assume a file as unchanged
+  a = update-index --assume-unchanged
+
+  # Unassume a file
+  ua = update-index --no-assume-unchanged
+
+  # Show assumed files
+  ad = "!git ls-files -v | grep ^h | cut -c 3-"
+
+  # Unassume all the assumed file
+  ual = "!git assumed | xargs git update-index --no-assume-unchanged"
+
+  # Assume all
+  al = "!git st -s | awk {'print $s} | xargs git assume"
+
+  #############################################################################
+  # Tag aliases                                                               #
+  #############################################################################
+
+  # Show the last tag
+  lt = describe --tags --abbrev=0
+
+  #############################################################################
+  # Merge aliases                                                             #
+  #############################################################################
+
+  or = "!f() { git co --ours $@ && git add $@; }; f"
+  tr = "!f() { git co --theirs $@ && git add $@; }; f"
+
+  #############################################################################
+  # Basic Shortcuts                                                           #
+  #############################################################################
+
+  cp = cherry-pick
+  st = status -s
+  cl = clone
+  ci = commit
+  cam = commit -a -m
+  co = checkout
+  br = branch
+  diff = diff --word-diff
+  cd = diff --cached
+
+  #############################################################################
+  # Reset Commands                                                            #
+  #############################################################################
+
+  r = reset
+  r1 = reset HEAD^
+  r2 = reset HEAD^^
+  rh = reset --hard
+  rh1 = reset HEAD^ --hard
+  rh2 = reset HEAD^^ --hard
+
+  #############################################################################
+  # Git-svn shortcuts                                                         #
+  #############################################################################
+
+  svnr = svn rebase
+  svnd = svn dcommit
+  svn = svn log --oneline --show-commit
+
+  #############################################################################
+  # Stash operations                                                          #
+  #############################################################################
+
+  sl = stash list
+  sa = stash apply
+  ss = stash save
+[core]
+  editor = mvim -v
