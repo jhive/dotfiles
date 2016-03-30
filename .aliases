@@ -6,6 +6,9 @@ alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
+# Overrides
+alias grep='grep --color'
+
 # Shortcuts
 alias d="cd ~/Documents/Dropbox"
 alias dl="cd ~/Downloads"
@@ -15,6 +18,9 @@ alias pp="cd ~/Playground"
 alias g="git"
 alias h="history"
 alias j="jobs"
+alias fd='find . -type d -name'
+alias ff='find . -type f -name'
+
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
