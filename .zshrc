@@ -45,8 +45,9 @@ plugins=(git history history-substring-search terminalapp brew sublime extract)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
+export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Users/anthonygarreffa/bin/gradle/bin:$ANDROID_HOME/platform-tools
 export CLOSURE_PATH=/usr/local/Cellar/closure-compiler/20130823/libexec/
+
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
 # * ~/.extra can be used for other settings you don’t want to commit.
@@ -58,8 +59,6 @@ unset file
 export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:$PATH
 
 # Aliases to SSH into audible amazon server
-alias sshihuli='ssh -i ~/.ssh/onstar.pem ubuntu@ihu.li'
-alias scphelp='echo Example: scp -i ~/.ssh/onstar.pem ubuntu@ihu.li:/home/ubuntu/audiobooks/treasure_32kbps.mp3 .'
 alias build='grunt compile:local'
 alias listconflicts='git diff --name-only --diff-filter=U'
 alias sst='sublime ./'
@@ -70,12 +69,8 @@ alias vim='mvim -v'
 alias mantra='node ~/bin/mantra/src/mantra.js'
 # alias launchihu='open -n -a Google\ Chrome mockindex.html  --args --disable-web-security --user-data-dir=/Users/shared --window-size=802,552 --allow-file-access-from-files'
 
-alias launchihu='open -n -a Google\ Chrome  --args --disable-web-security --user-data-dir=/Users/shared --app=http://localhost:9000/mockindex.html --app-window-size=802,482 --allow-file-access-from-files'
-
-
 alias dtrx='/usr/local/Cellar/dtrx/7.1/bin/dtrx'
 alias merge='git mergetool -t opendiff'
-
 alias mongostart="launchctl start org.mongodb.mongod"
 alias mongostop="launchctl stop org.mongodb.mongod"
 

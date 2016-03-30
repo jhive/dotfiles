@@ -16,6 +16,8 @@ Plugin 'jelera/vim-javascript-syntax'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'pangloss/vim-javascript'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'vim-scripts/groovy.vim'
+Plugin 'tfnico/vim-gradle'
 
 Plugin 'bkad/CamelCaseMotion' "Better motions for JS code
 Plugin 'scrooloose/syntastic' "JS Hint
